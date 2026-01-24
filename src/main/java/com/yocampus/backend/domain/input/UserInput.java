@@ -1,20 +1,38 @@
 package com.yocampus.backend.domain.input;
 
+import java.util.List;
+
+/**
+ * Represents raw input provided by the user.
+ *
+ * <p>This is the entry object of the system. It captures unstructured text
+ * (emails/notifications/messages) and basic user signals (e.g., stress level).</p>
+ */
 public class UserInput {
+
     /**
-     * Input the origin test
-     * For example: email, announcement and description of assignment
+     * Raw user-provided text (email/notification/task description).
      */
     private String rawText;
+
     /**
-     * the user's feeling of these days right now
+     * User's self-reported stress level (e.g. low/medium/high).
      */
     private String stressLevel;
-    public UserInput(){
+
+    /**
+     * Optional tags for demo or lightweight routing (can be empty/null).
+     */
+    private List<String> tags;
+
+    public UserInput() {
     }
-    public UserInput(String rawText,String stressLevel){
+
+    public UserInput(String rawText, String stressLevel, List<String> tags) {
         this.rawText = rawText;
         this.stressLevel = stressLevel;
+        this.tags = tags;
+
     }
 
     public String getRawText() {
@@ -31,5 +49,13 @@ public class UserInput {
 
     public void setStressLevel(String stressLevel) {
         this.stressLevel = stressLevel;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

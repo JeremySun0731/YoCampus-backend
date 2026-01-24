@@ -18,7 +18,10 @@ public class CampusDecisionResult {
      * May be null if confidence is not provided.
      */
     private Double confidence;//"Descriptive Model" of AI Decision Results
-
+    /**
+     * High-level intent of the decision (what the AI is trying to do).
+     */
+    private DecisionIntent intent;
     /**
      * Default constructor.
      */
@@ -31,10 +34,11 @@ public class CampusDecisionResult {
      * @param suggestedActions list of suggested actions
      * @param confidence confidence score of the decision
      */
-    public CampusDecisionResult(String summary,List<ActionItem> suggestedActions,double confidence){
+    public CampusDecisionResult(String summary,List<ActionItem> suggestedActions,double confidence,DecisionIntent intent){
         this.summary = summary;
         this.suggestedActions = suggestedActions;
         this.confidence = confidence;
+        this.intent = intent;
     }
     /**
      * Returns the AI-generated summary.
@@ -83,5 +87,21 @@ public class CampusDecisionResult {
      */
     public void setConfidence(Double confidence) {
         this.confidence = confidence;
+    }
+    /**
+     * Returns the high-level intent of the AI decision.
+     *
+     * @return decision intent
+     */
+    public DecisionIntent getIntent() {
+        return intent;
+    }
+    /**
+     * Sets the high-level intent of the AI decision.
+     *
+     * @param intent decision intent
+     */
+    public void setIntent(DecisionIntent intent) {
+        this.intent = intent;
     }
 }

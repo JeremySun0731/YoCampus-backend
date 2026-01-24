@@ -13,6 +13,11 @@ public class ActionItem {
      * Indicates whether user confirmation is required.
      */
     private boolean requiresConfirmation;
+
+    /**
+     * Short explanation for why this action is suggested.
+     */
+    private String reason;
     /**
      * Default constructor.
      */
@@ -24,11 +29,13 @@ public class ActionItem {
      * @param type action type suggested by the AI
      * @param label description shown to the user
      * @param requiresConfirmation whether user confirmation is required
+     * @param reason Short explanation for why this action is suggested.
      */
-    public ActionItem(String type, String label, boolean requiresConfirmation){
+    public ActionItem(String type, String label, boolean requiresConfirmation,String reason){
         this.type = type;
         this.label = label;
         this.requiresConfirmation = requiresConfirmation;
+        this.reason = reason;
     }
     /**
      * Returns the action type.
@@ -77,5 +84,21 @@ public class ActionItem {
      */
     public void setRequiresConfirmation(boolean requiresConfirmation) {
         this.requiresConfirmation = requiresConfirmation;
+    }
+    /**
+     * Returns the reason why this action is suggested.
+     *
+     * @return explanation text
+     */
+    public String getReason() {
+        return reason;
+    }
+    /**
+     * Sets the explanation for why this action is suggested.
+     *
+     * @param reason explanation text
+     */
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }
