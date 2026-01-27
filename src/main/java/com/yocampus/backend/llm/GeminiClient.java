@@ -1,26 +1,34 @@
 package com.yocampus.backend.llm;
-import java.net.URI;
 
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
 
+/**
+ * Simple client for calling the Gemini API.
+ */
 public class GeminiClient {
-    private static final String BASE_ENDPOINT =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
-    private final HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
-    private final String apiKey;
-    public GeminiClient(){
-        this.apiKey = System.getenv("GEMINI_API_KEY");
-        if (this.apiKey == null || this.apiKey.isBlank()) {
-            throw new IllegalStateException("Missing env var: GEMINI_API_KEY");
-        }
-    }
+
+    // Gemini API key
+    private static final String API_KEY = "YOUR_API_KEY";
+
+    // Gemini API endpoint
+    private static final String ENDPOINT =
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=" + API_KEY;
+
+    // HTTP client
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+
+    /**
+     * Sends a prompt to Gemini and returns the response.
+     *
+     * @param prompt text prompt
+     * @return API response as JSON string
+     */
     public String generate(String prompt) {
-        String safePrompt = prompt
-                .replace("\\", "\\\\")
-                .replace("\"", "\\\"");
+
+        // Request body for Gemini API
         String requestBody = """
         {
           "contents": [
@@ -31,25 +39,23 @@ public class GeminiClient {
             }
           ]
         }
-        """.formatted(safePrompt);
-        try {
-            String endpoint = BASE_ENDPOINT + "?key=" + apiKey;
+        """.formatted(prompt.replace("\"", "\\\""));
 
+        try {
+            // Build HTTP request
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(endpoint))
-                    .timeout(Duration.ofSeconds(30))
+                    .uri(URI.create(ENDPOINT))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
+            // Send request
             HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString()); 
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Gemini API error: " + response.statusCode() + " body=" + response.body());
-            }
-
+            // Return response body
             return response.body();
+
         } catch (Exception e) {
             throw new RuntimeException("Gemini API call failed", e);
         }
